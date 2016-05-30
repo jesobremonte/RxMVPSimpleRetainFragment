@@ -24,7 +24,8 @@ public class MainPresenter implements MainContract.Presenter {
         // Get the observable from service.
         Observable<String> observable = service.getResponse()
                 .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .observeOn(AndroidSchedulers.mainThread())
+                .cache();
 
         // Tell the view(which tells the retainFragment) to keep the observable, before subscribing.
         view.retainObservable(observable);
