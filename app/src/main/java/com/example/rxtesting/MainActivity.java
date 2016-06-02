@@ -57,12 +57,12 @@ public class MainActivity extends AppCompatActivity implements MainContract.Acti
     @Override
     protected void onPause() {
         super.onPause();
-        presenter.viewPaused();
+        presenter.clearSubscriptions();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        presenter.viewResumed();
+        presenter.resubscribeIfNeeded();
     }
 }

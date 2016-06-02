@@ -17,7 +17,7 @@ public interface MainContract {
 
     interface Presenter {
         void doButtonProcess();
-        void viewPaused();
-        void viewResumed();
+        void clearSubscriptions();
+        void resubscribeIfNeeded();
     }
 }

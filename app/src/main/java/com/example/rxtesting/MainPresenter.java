@@ -34,14 +34,14 @@ public class MainPresenter implements MainContract.Presenter {
     }
 
     @Override
-    public void viewPaused() {
+    public void clearSubscriptions() {
         if (compositeSubscription.hasSubscriptions()) {
             compositeSubscription.clear();
         }
     }
 
     @Override
-    public void viewResumed() {
+    public void resubscribeIfNeeded() {
         // Check if the retainedFragment is holding on to an observable, resubscribe if it is.
         Observable<String> retainedObservable = retainerView.getRetainedObservable();
 
@@ -66,7 +66,7 @@ public class MainPresenter implements MainContract.Presenter {
                     }
                 });
 
-        // Add observable to collection so it can be unsubscribed when viewPaused.
+        // Add observable to collection so it can be unsubscribed when clearSubscriptions.
         compositeSubscription.add(subscription);
     }
 }
