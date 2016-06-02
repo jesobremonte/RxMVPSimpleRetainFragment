@@ -8,15 +8,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import rx.Observable;
-
-public class MainActivity extends AppCompatActivity implements MainContract.View {
+public class MainActivity extends AppCompatActivity implements MainContract.ActivityView {
 
     private TextView textView;
     private Button button;
 
     private MainContract.Presenter presenter;
-
     private RetainedFragment retainedFragment;
 
     @Override
@@ -34,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
             Log.d(getClass().getName(), "Reusing existing retained fragment.");
         }
 
-        presenter = new MainPresenter(this);
+        presenter = new MainPresenter(this, retainedFragment);
 
         textView = (TextView) findViewById(R.id.textView);
         button = (Button) findViewById(R.id.button);
@@ -42,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                presenter.doProcess();
+                presenter.doButtonProcess();
             }
         });
     }
@@ -55,27 +52,17 @@ public class MainActivity extends AppCompatActivity implements MainContract.View
     @Override
     public void showResponseText(String responseText) {
         textView.setText(responseText);
-        retainedFragment.setObservable(null);
-    }
-
-    @Override
-    public void retainObservable(Observable<String> observable) {
-        retainedFragment.setObservable(observable);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        presenter.onPause();
+        presenter.viewPaused();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        // Check if the retainedFragment is holding on to an observable, resubscribe if it is.
-        if (retainedFragment.getObservable() != null) {
-            presenter.subscribeTo(retainedFragment.getObservable());
-        }
+        presenter.viewResumed();
     }
 }

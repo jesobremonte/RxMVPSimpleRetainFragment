@@ -4,15 +4,20 @@ import rx.Observable;
 
 public interface MainContract {
 
-    interface View {
+    interface RetainerView {
+        Observable<String> getRetainedObservable();
+        void retainObservable(Observable<String> observable);
+        void clearObservable();
+    }
+
+    interface ActivityView {
         void showLoadingText();
         void showResponseText(String responseText);
-        void retainObservable(Observable<String> observable);
     }
 
     interface Presenter {
-        void doProcess();
-        void onPause();
-        void subscribeTo(Observable<String> observable);
+        void doButtonProcess();
+        void viewPaused();
+        void viewResumed();
     }
 }

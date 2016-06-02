@@ -6,7 +6,7 @@ import android.support.v4.app.Fragment;
 
 import rx.Observable;
 
-public class RetainedFragment extends Fragment {
+public class RetainedFragment extends Fragment implements MainContract.RetainerView {
 
     private Observable<String> observable;
 
@@ -16,11 +16,18 @@ public class RetainedFragment extends Fragment {
         setRetainInstance(true);
     }
 
-    public Observable<String> getObservable() {
+    @Override
+    public Observable<String> getRetainedObservable() {
         return observable;
     }
 
-    public void setObservable(Observable<String> observable) {
+    @Override
+    public void retainObservable(Observable<String> observable) {
         this.observable = observable;
+    }
+
+    @Override
+    public void clearObservable() {
+        observable = null;
     }
 }
