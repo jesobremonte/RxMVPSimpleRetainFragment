@@ -23,10 +23,13 @@ public class MainPresenter implements MainContract.Presenter {
     public void doButtonProcess() {
         // Get the observable from service.
         Observable<String> observable = service.getResponse()
-                .cache();
+                .replay()
+                .autoConnect();
 
+        // Retain this long-running observable incase we need to unsubscribe and resubscibe.
         retainerView.retainObservable(observable);
 
+        // Subscribe to the observable
         subscribeTo(observable);
     }
 
